@@ -1,0 +1,10 @@
+{
+  "name": "safe-vibe",
+  "version": "0.1.0",
+  "description": "Stops Claude Code from running the few shell commands that cause real damage: DROP TABLE, force pushes to main, rm -rf outside the project, and a push that would overwrite a teammate.",
+  "author": { "name": "Nikita Spitsyn", "url": "https://github.com/nickspiz" },
+  "homepage": "https://github.com/nickspiz/safe-vibe",
+  "repository": "https://github.com/nickspiz/safe-vibe",
+  "license": "MIT",
+  "keywords": ["hooks", "safety", "git", "guardrails"]
+}

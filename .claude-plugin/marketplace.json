@@ -1,0 +1,12 @@
+{
+  "name": "safe-vibe",
+  "description": "Safety hooks for Claude Code",
+  "owner": { "name": "Nikita Spitsyn", "url": "https://github.com/nickspiz" },
+  "plugins": [
+    {
+      "name": "safe-vibe",
+      "source": "./",
+      "description": "Blocks destructive shell commands and rebases before you push. Plain-English messages, no dependencies."
+    }
+  ]
+}

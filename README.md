@@ -2,6 +2,8 @@
 
 **Claude Code can't wipe your prod, steal your focus, or rewrite your git history. One command.**
 
+![The agent tries a force push to main and a DROP TABLE; safe-vibe blocks both with a plain-English message](docs/demo.gif)
+
 [![tests](https://img.shields.io/badge/tests-95%20passing-brightgreen)](tests)
 [![python](https://img.shields.io/badge/python-3.9%2B-blue)](#requirements)
 [![dependencies](https://img.shields.io/badge/dependencies-none-lightgrey)](#requirements)
@@ -14,6 +16,12 @@ curl -fsSL https://raw.githubusercontent.com/nickspiz/safe-vibe/main/install.sh 
 ```
 
 That adds the hooks to `~/.claude/settings.json`, after making a backup. Run it twice and nothing changes the second time.
+
+Or install it as a Claude Code plugin (guard and pull-before-push hooks):
+
+```text
+/plugin install safe-vibe --marketplace nickspiz/safe-vibe
+```
 
 ## What you get
 
@@ -174,3 +182,5 @@ The tests run each hook as a subprocess against throwaway git repos and a tempor
 ## License
 
 MIT
+
+If this saved you from a bad command, a star helps others find it.
