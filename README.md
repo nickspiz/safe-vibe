@@ -11,17 +11,20 @@
 
 Three small Python hooks for [Claude Code](https://docs.claude.com/en/docs/claude-code/hooks). They run before every shell command the agent wants to execute and stop the few that cause real damage.
 
-```bash
-curl -fsSL https://raw.githubusercontent.com/nickspiz/safe-vibe/main/install.sh | bash
-```
-
-That adds the hooks to `~/.claude/settings.json`, after making a backup. Run it twice and nothing changes the second time.
-
-Or install it as a Claude Code plugin. It includes the guard and pull-before-push hooks:
+Install it as a Claude Code plugin. The plugin ships the guard and pull-before-push hooks and nothing else:
 
 ```text
-/plugin install safe-vibe --marketplace nickspiz/safe-vibe
+/plugin marketplace add nickspiz/safe-vibe
+/plugin install safe-vibe@safe-vibe
 ```
+
+Prefer a manual install? `install.sh` and `installer.py` are a separate, non-plugin path. They are not part of what the plugin runs. See [Install without the plugin](#install-without-the-plugin).
+
+## Example prompts
+
+- "Run `git reset --hard` in this repo." The hook blocks it and tells Claude why.
+- "Delete the build folder inside the project." Allowed, because it is inside the project.
+- "Push my branch." If a teammate pushed first, the hook rebases your work on top of theirs, then pushes.
 
 ## What you get
 
@@ -79,7 +82,9 @@ safe-vibe blocked this command.
   Instead: Run `git pull --rebase`, resolve the conflicted files together with the user, then push again. Never force-push to get around this.
 ```
 
-## Install
+## Install without the plugin
+
+This path does not use the plugin system. `install.sh` runs `installer.py`, which edits your Claude Code settings file.
 
 ```bash
 # for your user, all projects
@@ -94,7 +99,7 @@ git clone https://github.com/nickspiz/safe-vibe && cd safe-vibe
 ./uninstall.sh                  # removes only the safe-vibe entries
 ```
 
-The installer copies the hooks to `~/.claude/safe-vibe/hooks/` (or `<project>/.claude/safe-vibe/hooks/`), writes one `PreToolUse` entry with matcher `Bash`, and drops a starter `safe-vibe.toml` if you have none. Before it writes `settings.json` it saves `settings.json.safe-vibe-backup-<timestamp>` next to it. If your settings file is not valid JSON, it stops and changes nothing. Your other hooks and settings are kept.
+The installer copies the hooks to `~/.claude/safe-vibe/hooks/` (or `<project>/.claude/safe-vibe/hooks/`), writes one `PreToolUse` entry with matcher `Bash`, and drops a starter `safe-vibe.toml` if you have none. It edits `~/.claude/settings.json` (or `<project>/.claude/settings.json`). Before it writes, it saves `settings.json.safe-vibe-backup-<timestamp>` next to it. If your settings file is not valid JSON, it stops and changes nothing. Your other hooks and settings are kept.
 
 Restart Claude Code afterwards, or open `/hooks` to check.
 
@@ -183,8 +188,20 @@ The tests run each hook as a subprocess against throwaway git repos and a tempor
 
 Have a question or an idea? Start a [discussion](https://github.com/nickspiz/safe-vibe/discussions). For bugs, open an [issue](https://github.com/nickspiz/safe-vibe/issues/new/choose). See [CONTRIBUTING.md](CONTRIBUTING.md) before sending a pull request.
 
+## Privacy
+
+What the plugin reads, writes, runs and sends:
+
+- **Runs:** two Python scripts before each Bash command Claude Code wants to run, `hooks/guard.py` and `hooks/pull_before_push.py`, started with `python3`. The guard also runs `git symbolic-ref` to learn the current branch. Before a `git push`, `pull_before_push.py` runs `git fetch`, and `git pull --rebase --autostash` if the remote is ahead. That can change your working tree. On a conflict it aborts the rebase.
+- **Reads:** the command text Claude Code passes in, the environment variables `SAFE_VIBE_OFF`, `SAFE_VIBE_CONFIG`, `CLAUDE_PROJECT_DIR` and `HOME`, and the optional config files `safe-vibe.toml` or `safe-vibe.json` (project, `.claude/`, or `~/.config/safe-vibe/`).
+- **Writes:** nothing. The hooks never create or edit files. The only change to your files is the rebase above.
+- **Sends:** nothing to the author or anyone else. The only network access is the `git fetch` to your own remote. No telemetry, no downloads at runtime.
+- **Not part of the plugin:** `install.sh`, `uninstall.sh`, `installer.py` and `no_focus_steal.py`. `install.sh` downloads files from github.com when run through `curl | bash`, and `installer.py` edits `~/.claude/settings.json` after making a backup. Neither runs unless you run it yourself.
+
+## Support
+
+Questions or bugs: [GitHub Issues](https://github.com/nickspiz/safe-vibe/issues) or hello@nickspiz.com.
+
 ## License
 
 MIT
-
-If this helped, a star helps others find it.
