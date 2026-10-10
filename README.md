@@ -179,6 +179,10 @@ pytest
 
 The tests run each hook as a subprocess against throwaway git repos and a temporary `HOME`, so they never touch your real Claude settings.
 
+## Questions and ideas
+
+Have a question or an idea? Start a [discussion](https://github.com/nickspiz/safe-vibe/discussions). For bugs, open an [issue](https://github.com/nickspiz/safe-vibe/issues/new/choose). See [CONTRIBUTING.md](CONTRIBUTING.md) before sending a pull request.
+
 ## License
 
 MIT
