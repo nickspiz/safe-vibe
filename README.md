@@ -4,7 +4,7 @@
 
 ![safe-vibe blocking a force push to main and a DROP TABLE](docs/demo.gif)
 
-[![tests](https://img.shields.io/badge/tests-95%20passing-brightgreen)](tests)
+[![tests](https://img.shields.io/badge/tests-97%20passing-brightgreen)](tests)
 [![python](https://img.shields.io/badge/python-3.9%2B-blue)](#requirements)
 [![dependencies](https://img.shields.io/badge/dependencies-none-lightgrey)](#requirements)
 [![license: MIT](https://img.shields.io/badge/license-MIT-yellow)](LICENSE)

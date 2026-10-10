@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for looking at safe-vibe. It is three small Python hooks that stop destructive agent commands. Small, focused fixes are the most useful.
+This repo is three small Python hooks that stop destructive agent commands. Small, focused fixes are welcome.
 
 ## Before you start
 
