@@ -1,0 +1,38 @@
+# safe-vibe config. Every section is optional.
+# Put this file at <project>/safe-vibe.toml (or <project>/.claude/safe-vibe.toml)
+# for one project, or at ~/.config/safe-vibe/safe-vibe.toml for all of them.
+# Project settings are added on top of the global ones.
+# JSON works too: same keys in safe-vibe.json.
+
+[guard]
+# Branches that must never be force-pushed.
+protected_branches = ["main", "master", "release"]
+
+# Turn a built-in rule off. Ids: sql-drop, sql-truncate, sql-delete,
+# terraform-destroy, compose-down, kubectl-delete, git-reset-hard,
+# git-force-push, rm-outside-project, prod-host
+disable = []
+
+# Regexes. A command segment that matches one is let through untouched.
+allow = ['^docker compose -f docker-compose\.test\.yml down']
+
+# Extra folders where `rm -r` is fine, on top of /tmp.
+rm_safe_paths = ["~/scratch"]
+
+# Hosts you never want an agent to touch. Anything that runs ssh, scp,
+# rsync, psql, mysql, docker or kubectl against them is blocked.
+[prod]
+hosts = ["prod.example.com", "10.0.0.5"]
+
+# Your own rules. `pattern` is a case-insensitive regex.
+[[rule]]
+id = "no-deploy-script"
+pattern = 'npm run deploy|\./deploy\.sh'
+what = "the deploy script"
+why = "deploys go out through CI here, not from a laptop."
+instead = "Push to main and watch the pipeline, or ask the user."
+
+# macOS focus hook.
+[focus]
+disable = []            # ids: open, say, osascript, headed
+allow = []              # regexes, same as above
